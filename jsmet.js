@@ -93,17 +93,80 @@ function run_cmd(cmd, args, callBack ) {
 
 
 
-function select( r, w, e, tv_sec = 0, tv_usec = 0) {
-		r='asd';
+function select( va, tv_sec = 0, tv_usec = 0) {
+		
     streams_r = [];
     streams_w = [];
     streams_e = [];
     sockets_r = [];
     sockets_w = [];
     sockets_e = [];
+		//va.a = "hello"; 
+ 	  //va.b="asd";
+  	//va.c="dsa";
+		//va.d="dsa";
+ 	  //console.log(va); 
+    
+		if (va.a){
+				va.a.forEach(function(entry) {
+  			  	if (entry.constructor.name == 'Socket') {
+								sockets_r[0] = entry;
+								my_print("It's a socket !");
+								
+						}			
+				});
+		n_sockets = sockets_r.length
+	
+		}
+		
+		if (va.b){
+				va.b.forEach(function(entry) {
+  			  	if (entry.constructor.name == 'Socket') {
+								sockets_w = entry;
+								my_print("It's a socket !");
+						}			
+				});
+		n_sockets += sockets_w.length
+		}
+		
+		if (va.c){
+				va.c.forEach(function(entry) {
+  			  	if (entry.constructor.name == 'Socket') {
+								sockets_e = entry;
+								my_print("It's a socket !");
+						}			
+				});
+		n_sockets += sockets_e.length
+	
+		}
 
+
+		
+
+		if (sockets_r.length == 0) {
+        $sockets_r = null;
+    }
+    if (sockets_w.length == 0){
+        $sockets_w = null;
+    }
+    if (sockets_e.length == 0) {
+        $sockets_e = null;
+    }
+
+		if (n_sockets > 0) {
+				if (isArray(va.a) && isArray(sockets_r)) {
+            va.a = va.a.concat(sockets_r);
+        }
+        if (isArray(va.b) && isArray(sockets_w)) {
+            va.b = va.b.concat(sockets_w);
+        }
+        if (isArray(va.c) && isArray(sockets_e)) {
+            va.c = va.c.concat(socketse);
+        }
+		}
+		
+		
 }
-
 
 function connect(ipaddr, port) {
     
@@ -132,18 +195,24 @@ if (typeof msgsock == "undefined") {
 
 }
 
+
 add_reader(socks);
 
 r = readers;
 w = null;
 e = null;
 t = 1;
-console.log("\n\n[+] GETTING INSIDE THE BIG WHILE LOOP .. \n\n");
 
-while (false !== (cnt = select(r, w, e, t))) {
-   
+var combine = {a:r,b:w,c:e,d:t};
+
+select(combine) 
+
+//console.log("\n\n[+] GETTING INSIDE THE BIG WHILE LOOP .. \n\n");
+/*
+while (false !== (cnt = select(combine))) {
+   console.log(r);
 	break;
 }
 
-
+*/
 
